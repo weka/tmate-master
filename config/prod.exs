@@ -19,20 +19,9 @@ config :tmate, TmateWeb.Endpoint,
 # XXX If SSL options are needed. See tmate-websocket for example
 config :tmate, TmateWeb.Endpoint, server: true
 
-# Do not print debug messages in production
-config :logger, level: :info
-
-#database_url =
-#  System.get_env("DATABASE_URL") ||
-#    raise """
-#    environment variable DATABASE_URL is missing.
-#    For example: ecto://USER:PASS@HOST/DATABASE
-#    """
-#
-#config :tmate, Tmate.Repo,
-#  # ssl: true,
-#  url: database_url,
-#  pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10")
+# Choose log level from env variable
+log_level = String.to_atom(String.downcase(System.get_env("LOG_LEVEL") || "info"))
+config :logger, :console, level: log_level, format: "[$date] [$time] [$level] $message\n"
 
 pg = URI.parse(System.get_env("PG_URI", "pg://user:pass@host:5432/db"))
 config :tmate, Tmate.Repo,
