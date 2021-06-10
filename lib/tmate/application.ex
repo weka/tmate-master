@@ -7,6 +7,9 @@ defmodule Tmate.Application do
 
   def start(_type, _args) do
     Tmate.Monitoring.setup()
+    :ok = :telemetry.detach({Phoenix.Logger, [:phoenix, :socket_connected]})
+    :ok = :telemetry.detach({Phoenix.Logger, [:phoenix, :channel_joined]})
+    :ok = :telemetry.detach({Phoenix.Logger, [:phoenix, :router_dispatch, :start]})
 
     # List all child processes to be supervised
     children = [
